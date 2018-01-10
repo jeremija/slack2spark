@@ -32,7 +32,7 @@ function log () {
 }
 
 app.get('/', (req, res) => {
-  res.json({ app: 'slack2spark' })
+  res.json({ app: 'slack2spark', date: new Date() })
 })
 
 app.use('/api', (req, res, next) => {
