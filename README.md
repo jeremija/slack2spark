@@ -12,8 +12,8 @@ HTTPS=1 PORT=8443 node index.js - start the server on port 8443, and use HTTPS
 ```
 
 Post a slack-compatible message to: http://localhost:3000/app/message and it
-will forward the adequate space on Spark. Make sure the user whose token is
-used is added to that space.
+will be forwarded to the configured space on Spark. Make sure the user whose
+token is used is added to that space.
 
 # configuration
 
