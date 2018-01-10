@@ -2,3 +2,6 @@ spark:
   token: 'token'
   roomId: 'abcdef'
   url: 'https://api.ciscospark.com/v1/messages'
+
+app:
+  accessToken: 76cb9d33-fe7b-418e-a77b-c297ddb95bf4

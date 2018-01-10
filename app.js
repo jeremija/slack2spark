@@ -1,5 +1,6 @@
 const axios = require('axios')
 const bodyParser = require('body-parser')
+const createError = require('http-errors')
 const config = require('config')
 const express = require('express')
 
@@ -8,6 +9,7 @@ const app = express()
 const token = config.get('spark.token')
 const roomId = config.get('spark.roomId')
 const url = config.get('spark.url')
+const accessToken = config.get('app.accessToken')
 
 app.use(bodyParser.json({ limit: '2048kb' }))
 
@@ -29,7 +31,20 @@ function log () {
   console.log.apply(console, args)
 }
 
-app.post('/', (req, res) => {
+app.get('/', (req, res) => {
+  res.json({ app: 'slack2spark' })
+})
+
+app.use('/api', (req, res, next) => {
+  let token = req.headers['authorization'] || req.query.token || ''
+  token = token.replace(/^Token /, '')
+  if (token !== accessToken) {
+    return next(createError(401, 'Unauthorized'))
+  }
+  next()
+})
+
+app.post('/api/message', (req, res, next) => {
   const markdown = slack2spark(req.body)
   log('Got message:', markdown)
 
@@ -45,9 +60,18 @@ app.post('/', (req, res) => {
     log('Status OK')
     res.status(200).end()
   })
-  .catch(err => {
-    log('Error: ' + err.stack)
-    res.status(500).end()
+  .catch(next)
+})
+
+app.use((err, req, res, next) => {
+  if (err instanceof createError.HttpError) {
+    return res.status(err.statusCode).json({
+      error: err.message
+    })
+  }
+
+  res.status(500).json({
+    error: 'An unexpected error has occurred'
   })
 })
 
