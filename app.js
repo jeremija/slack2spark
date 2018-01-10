@@ -1,13 +1,14 @@
 const axios = require('axios')
 const bodyParser = require('body-parser')
-const createError = require('http-errors')
 const config = require('config')
+const createError = require('http-errors')
 const express = require('express')
+const log = require('./log')
 
 const app = express()
 
 const token = config.get('spark.token')
-const roomId = config.get('spark.roomId')
+const spaces = config.get('spark.spaces')
 const url = config.get('spark.url')
 const accessToken = config.get('app.accessToken')
 
@@ -26,11 +27,6 @@ function slack2spark (payload) {
   return markdown.replace(/<(.*)\|(.*)>/g, (_, a, b) => `[${b}](${a})`)
 }
 
-function log () {
-  const args = [new Date().toISOString()].concat(Array.from(arguments))
-  console.log.apply(console, args)
-}
-
 app.get('/', (req, res) => {
   res.json({ app: 'slack2spark', date: new Date() })
 })
@@ -44,7 +40,7 @@ app.use('/api', (req, res, next) => {
   next()
 })
 
-app.post('/api/message', (req, res, next) => {
+const createEndpoint = roomId => (req, res, next) => {
   const markdown = slack2spark(req.body)
   log('Got message:', markdown)
 
@@ -61,6 +57,13 @@ app.post('/api/message', (req, res, next) => {
     res.status(200).end()
   })
   .catch(next)
+}
+
+spaces.forEach(space => {
+  const { roomId, name } = space
+  const endpoint = `/api/messages/${name}`
+  log('Creating endpoint:', endpoint)
+  app.post(endpoint, createEndpoint(roomId))
 })
 
 app.use((err, req, res, next) => {

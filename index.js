@@ -1,5 +1,6 @@
 const app = require('./app')
 const config = require('config')
+const log = require('./log')
 const port = process.env.PORT || 3000
 
 let server
@@ -13,13 +14,13 @@ if (process.env.HTTPS) {
 }
 
 const _server = server.listen(port, () => {
-  console.log('Listening on %s', port)
+  log('Listening on', port)
 })
 
 function shutdown () {
-  console.log('Received shutdown signal, stopping server.')
+  log('Received shutdown signal, stopping server.')
   _server.close(() => {
-    console.log('Server stopped.')
+    log('Server stopped.')
     process.exit()
   })
 }

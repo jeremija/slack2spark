@@ -4,7 +4,7 @@ const nock = require('nock')
 const request = require('supertest')
 const url = require('url')
 
-const roomId = config.get('spark.roomId')
+const spaces = config.get('spark.spaces')
 const token = config.get('spark.token')
 const sparkUrl = config.get('spark.url')
 const accessToken = config.get('app.accessToken')
@@ -23,7 +23,9 @@ describe('app', () => {
     nock.restore()
   })
 
-  describe('POST /api/message', () => {
+  const space = spaces[0]
+  const endpoint = '/api/messages/' + space.name
+  describe('POST ' + endpoint, () => {
 
     const body = {
       text: "I am a test message <http://slack.com|link>",
@@ -34,7 +36,7 @@ describe('app', () => {
 
     it('returns status 401 when no token', () => {
       return request(app)
-      .post('/api/message')
+      .post(endpoint)
       .send(body)
       .expect(401)
       .expect({ error: 'Unauthorized' })
@@ -47,13 +49,13 @@ describe('app', () => {
           expect(body).toEqual({
             markdown: 'I am a test message [link](http://slack.com)\n\n' +
             '- And here\'s an attachment!',
-            roomId
+            roomId: space.roomId
           })
           return true
         })
         .reply(200)
         return request(app)
-        .post('/api/message?token=' + accessToken)
+        .post(endpoint + '?token=' + accessToken)
         .send(body)
         .expect(200)
         .then(() => {
