@@ -1,0 +1,4 @@
+spark:
+  token: 'token'
+  roomId: 'abcdef'
+  url: 'https://api.ciscospark.com/v1/messages'
