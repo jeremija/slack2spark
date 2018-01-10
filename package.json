@@ -4,7 +4,8 @@
   "description": "Adapter that receives Slack-compatible webhooks and converts them to Cisco Spark-compatible webhooks",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node index.js"
   },
   "keywords": [
     "slack",

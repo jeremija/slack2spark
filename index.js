@@ -4,8 +4,9 @@ const port = process.env.PORT || 3000
 
 let server
 if (process.env.HTTPS) {
-  const cert = config.get('app.ssl.cert')
-  const key = config.get('app.ssl.key')
+  const fs = require('fs')
+  const cert = fs.readFileSync(config.get('app.ssl.cert'))
+  const key = fs.readFileSync(config.get('app.ssl.key'))
   server = require('https').createServer({ key, cert }, app)
 } else {
   server = require('http').createServer(app)
