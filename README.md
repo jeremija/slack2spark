@@ -10,9 +10,21 @@ them to Cisco Spark-compatible webhooks
 # Usage
 
 ```bash
-npm test                        - run tests
-npm start                       - start the server
-HTTPS=1 PORT=8443 node index.js - start the server on port 8443, and use HTTPS
+# clone this repository
+git clone https://github.com/jeremija/slack2spark
+cd slack2spark
+
+# install dependencies
+npm install
+
+# run the tests
+npm test
+
+# start the application
+npm start
+
+# start the server on port 8443, and use HTTPS
+HTTPS=1 PORT=8443 node index.js
 ```
 
 Post a slack-compatible message to: http://localhost:3000/app/message and it
