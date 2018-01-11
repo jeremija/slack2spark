@@ -13,10 +13,11 @@ const url = config.get('spark.url')
 const accessToken = config.get('app.accessToken')
 
 app.use(bodyParser.json({ limit: '2048kb' }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 function slack2spark (payload) {
   const { text, attachments } = payload
-  let markdown = text
+  let markdown = text || ''
 
   if (attachments && attachments.length) {
     const lines = attachments.map(a => '- ' + a.text).join('\n')
@@ -31,27 +32,44 @@ app.get('/', (req, res) => {
   res.json({ app: 'slack2spark', date: new Date() })
 })
 
-app.use('/api', (req, res, next) => {
+function convertPayload (req, res, next) {
+  if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+    req.body = JSON.parse(req.body.payload)
+  }
+
+  next()
+}
+
+function authenticate (req, res, next) {
   let token = req.headers['authorization'] || req.query.token || ''
   token = token.replace(/^Token /, '')
   if (token !== accessToken) {
     return next(createError(401, 'Unauthorized'))
   }
+
   next()
-})
+}
+
+app.use('/api', [
+  authenticate,
+  convertPayload
+])
 
 const createEndpoint = roomId => (req, res, next) => {
   const markdown = slack2spark(req.body)
   log('Got message:', markdown)
 
-  axios({
+  const options = {
     method: 'post',
     url,
     headers: {
       Authorization: `Bearer ${token}`
     },
     data: { markdown, roomId }
-  })
+  }
+
+  // log('axios', options)
+  axios(options)
   .then(() => {
     log('Status OK')
     res.status(200).end()
