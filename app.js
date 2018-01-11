@@ -4,6 +4,7 @@ const config = require('config')
 const createError = require('http-errors')
 const express = require('express')
 const log = require('./log')
+const { version } = require('./package.json')
 
 const app = express()
 
@@ -29,7 +30,7 @@ function slack2spark (payload) {
 }
 
 app.get('/', (req, res) => {
-  res.json({ app: 'slack2spark', date: new Date() })
+  res.json({ app: 'slack2spark', date: new Date(), version })
 })
 
 function convertPayload (req, res, next) {
