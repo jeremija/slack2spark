@@ -25,7 +25,7 @@ function slack2spark (payload) {
   }
 
   // replace slack formatted links
-  return markdown.replace(/<(.*)\|(.*)>/g, (_, a, b) => `[${b}](${a})`)
+  return markdown.replace(/<(.*?)\|(.*?)>/g, (_, a, b) => `[${b}](${a})`)
 }
 
 app.get('/', (req, res) => {
