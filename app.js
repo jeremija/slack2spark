@@ -68,11 +68,13 @@ spaces.forEach(space => {
 
 app.use((err, req, res, next) => {
   if (err instanceof createError.HttpError) {
+    log(err.statusCode, err.message)
     return res.status(err.statusCode).json({
       error: err.message
     })
   }
 
+  log(err && err.stack)
   res.status(500).json({
     error: 'An unexpected error has occurred'
   })
