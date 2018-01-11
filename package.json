@@ -1,6 +1,6 @@
 {
   "name": "slack2spark",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Adapter that receives Slack-compatible webhooks and converts them to Cisco Spark-compatible webhooks",
   "main": "index.js",
   "scripts": {
