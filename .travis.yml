@@ -1,0 +1,12 @@
+sudo: required
+language: node_js
+
+services:
+  - docker
+
+script:
+  - docker build --pull . -t slack2spark
+  - docker run --rm slack2spark npm test
+
+notifications:
+  email: false
