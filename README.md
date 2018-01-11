@@ -1,5 +1,9 @@
 # slack2spark
 
+[![Build Status](https://travis-ci.org/jeremija/slack2spark.svg?branch=master)](https://travis-ci.org/jeremija/slack2spark)
+[![Docker Build](https://img.shields.io/docker/automated/jeremija/slack2spark.svg
+)](https://hub.docker.com/r/jeremija/slack2spark/)
+
 Work in progress. Adapter that receives Slack-compatible webhooks and converts
 them to Cisco Spark-compatible webhooks
 
