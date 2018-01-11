@@ -96,9 +96,9 @@ curl -X POST http://localhost:3000/api/messages/room-name?token=changeme \
 # Config Files
 
 This project uses [node-config][node-config] module. Configure
-`config/default.yaml` or add `config/local.yaml`. Extra configuration is
-available by putting a JSON configuration in the `NODE_CONFIG` environment
-variable to a JSON.
+`config/default.yaml` or add `config/local.yaml`. External configuration is
+available through the `NODE_CONFIG` environment variable, in the form of a JSON
+string.
 
 # License
 
