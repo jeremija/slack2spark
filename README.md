@@ -69,7 +69,7 @@ spark:
 ```
 
 After the app is started, slack-compatible [incoming webhooks][slack-webhooks]
-will be forwarded to the configure Cisco Spark space:
+will be forwarded to the configured space on Spark:
 
 ```bash
 curl -X POST 'localhost:3000/api/messages/room-name?token=changeme' \
