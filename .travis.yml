@@ -5,7 +5,7 @@ services:
 
 script:
   - docker build --pull . -t slack2spark
-  - docker run --rm slack2spark npm test
+  - docker run --rm slack2spark npm run ci
 
 notifications:
   email: false

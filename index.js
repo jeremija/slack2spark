@@ -1,6 +1,11 @@
-const app = require('./app')
+if (!process.env.DEBUG) {
+  process.env.DEBUG = 'slack2spark'
+  process.env.DEBUG_COLORS = '0'
+}
+const app = require('./src/app')
 const config = require('config')
-const log = require('./log')
+const { log } = require('./src/log')
+
 const port = process.env.PORT || 3000
 
 let server

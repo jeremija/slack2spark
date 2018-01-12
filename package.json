@@ -4,7 +4,10 @@
   "description": "Adapter that receives Slack-compatible webhooks and converts them to Cisco Spark-compatible webhooks",
   "main": "index.js",
   "scripts": {
+    "ci": "npm run lint && jest --coverage --coverageDirectory /tmp/coverage",
     "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint .",
     "start": "node index.js"
   },
   "keywords": [
@@ -18,11 +21,18 @@
     "axios": "0.17.1",
     "body-parser": "1.18.2",
     "config": "1.29.1",
+    "debug": "3.1.0",
     "express": "4.16.2",
     "http-errors": "1.6.2",
     "js-yaml": "3.10.0"
   },
   "devDependencies": {
+    "eslint": "4.15.0",
+    "eslint-config-standard": "11.0.0-beta.0",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-node": "5.2.1",
+    "eslint-plugin-promise": "3.6.0",
+    "eslint-plugin-standard": "3.0.1",
     "jest-cli": "22.0.5",
     "nock": "9.1.6",
     "nodemon": "1.14.10",
